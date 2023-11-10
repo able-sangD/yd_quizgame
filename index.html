@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>상식 퀴즈 게임</title>
+    <style>
+        body {
+            background-image: url('흰짱.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-size: 30px;
+            color: white;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+
+        h1 {
+            font-size: 80px;
+            color: rgb(0, 0, 0);
+            text-align: center;
+            padding: 20px;
+            -webkit-text-stroke: 1% rgb(255, 255, 255);
+            margin-top: 0;
+        }
+
+        .quiz-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: 2px solid black;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        p {
+            color: white;
+            font-size: 25px;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+    </style>
+</head>
+<body>
+    <h1> 호호이 맞춰봐!</h1>
+
+    <div class="quiz-container">
+        <h3>상식 퀴즈입니다:</h3>
+        <p>맞춰보세요.^^</p>
+        <input type="text" id="answer" placeholder="정답을 입력하세요">
+        <button id="checkAnswer">정답 확인</button>
+        <button id="nextQuestion">다음 문제로</button>
+        <p id="result"></p>
+        <p id="accuracy"></p>
+    </div>
+</body>
+</html>
+
+    <script>
+        const questions = [
+            "덴마크의 수도는 어디일까요?",
+            "세계에서 가장 큰 GDP를 가진 나라는 어디일까요?",
+            "진화론을 제시한 과학자는 누구일까요?",
+            "짱구는못말려 일본판에서 카자마 토오루라는 이름을 가진 사람은 누구일까요?",
+            "우리나라 국보 1호 문화재의 이름은 무엇일까요?",
+            "방금 당신은 달리기 시합에서 2등을 제쳤습니다. 당신은 현재 몇 등일까요?",
+            "제작자가 가장 좋아하는 음식은 무엇일까요?/ 1. 떡볶이  2. 치킨  3. 족발  4. 국밥",
+            "낙지는 심장이 3개입니다. (O/X)",
+            "한국에서 면적이 가장 넓은 지역은? (도 단위로 작성하세요)",
+            "24시간은 몇 분일까요?",
+            "인류가 처음 발견한 항생제는 무엇일까요?",
+            "닭은 스스로 빛을 낸다. (O/X)",
+            "그린피스는 비정부 기구이다. (O/X)"
+        ];
+
+        const answers = ["코펜하겐", "미국", "다윈", "철수", "숭례문", "2등", "1", "O", "경상북도", "1440분", "페니실린", "X", "O"];
+
+        let currentQuestion = 0;
+        const totalQuestions = questions.length;
+        let correctAnswers = 0;
+
+        const answerInput = document.getElementById("answer");
+        const resultElement = document.getElementById("result");
+        const accuracyElement = document.getElementById("accuracy");
+        const checkAnswerButton = document.getElementById("checkAnswer");
+        const nextQuestionButton = document.getElementById("nextQuestion");
+
+        function displayQuestion() {
+            if (currentQuestion < totalQuestions) {
+                document.querySelector("h3").textContent = questions[currentQuestion];
+                document.getElementById("answer").value = "";
+                document.getElementById("result").textContent = "";
+            } else {
+                document.querySelector("h3").textContent = "게임 종료! 모든 문제를 풀었습니다.^^";
+                answerInput.disabled = true;
+                checkAnswerButton.disabled = true;
+                nextQuestionButton.disabled = true;
+                const accuracy = (correctAnswers / totalQuestions) * 100;
+                accuracyElement.textContent = "정답률: " + accuracy.toFixed(2) + "%";
+            }
+        }
+
+        function checkAnswer() {
+            const userAnswer = answerInput.value.toLowerCase();
+            const correctAnswer = answers[currentQuestion].toLowerCase();
+
+            if (userAnswer === correctAnswer) {
+                resultElement.textContent = "정답.ㅎㅎ";
+                correctAnswers++;
+            } else {
+                resultElement.textContent = "땡!!!!!!";
+            }
+
+            checkAnswerButton.disabled = true;
+            nextQuestionButton.disabled = false;
+        }
+
+        function moveToNextQuestion() {
+            currentQuestion++;
+            checkAnswerButton.disabled = false;
+            nextQuestionButton.disabled = true;
+            displayQuestion();
+        }
+
+        checkAnswerButton.addEventListener("click", checkAnswer);
+        nextQuestionButton.addEventListener("click", moveToNextQuestion);
+
+        // 초기 질문 설정
+        displayQuestion();
+    </script>
+</body>
+</html>
